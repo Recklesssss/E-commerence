@@ -1,0 +1,30 @@
+.adj_main {
+    height: calc(100vh - 120px);
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: yellow;
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr 1fr;
+    gap: 20px;
+    z-index: -1;
+  }
+.banner{
+    background-color: aqua;
+    display: flex;
+    align-items: center;
+}
+.banner img{
+    height:350px ;
+    width: 100%;
+    object-fit: fill;
+}
+.electronics{
+    background-color: blueviolet;
+}
+.furniture{
+    background-color: lightgreen;
+}
+.agriculture{
+    background-color: lightpink;
+}
