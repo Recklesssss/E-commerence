@@ -4,6 +4,12 @@
   background-color: #1A1A1D;
   height: 120px;
 }
+
+a {
+  text-decoration: none; 
+  color: inherit; 
+}
+
 .top_nav {
   margin: 0;
   position: absolute;

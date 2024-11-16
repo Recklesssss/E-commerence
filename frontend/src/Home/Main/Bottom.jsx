@@ -26,7 +26,7 @@ function Bottom() {
       </div>
     </div>
     <div className="footer-bottom">
-      <p>&copy; 2024 E-Commerce Platform. All Rights Reserved.</p>
+      <p style={{color:"white"}}>&copy; 2024 E-Commerce Platform. All Rights Reserved.</p>
     </div>
   </footer>
   

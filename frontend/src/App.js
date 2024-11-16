@@ -1,6 +1,7 @@
 import React from 'react';
 import Home from './Home/Home';
 import About from './about us/About';
+import ContactUs from './contact/Contact';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 
 function App() {
@@ -17,9 +18,10 @@ function App() {
         }
         />
         <Route
-        path='/addrestaurant'
+        path='/Contact us'
         element = {
           <>
+          <ContactUs/>
           </>
         }
         />
