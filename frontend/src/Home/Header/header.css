@@ -169,6 +169,7 @@
     flex-direction: column;
     position: absolute;
     left: 10px;
+    z-index: 4;
   }
 
   .Nav__bars {

@@ -1,5 +1,6 @@
 import React from 'react';
 import Home from './Home/Home';
+import About from './about us/About';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 
 function App() {
@@ -8,9 +9,10 @@ function App() {
       <Router>
         <Routes>
         <Route
-        path='/addOrderDelivery'
+        path='/About us'
         element = {
           <>
+          <About/>
           </>
         }
         />

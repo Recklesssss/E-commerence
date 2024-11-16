@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './header.css';
 import { CiMenuBurger } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
+import { Link } from 'react-router-dom';
 
 function Header() {
   const [toggle, setToggle] = useState(false); // State to control dropdown visibility
@@ -79,7 +80,7 @@ function Header() {
         <ul className="Nav__bars">
           <li>HOME</li>
           <li>SHOP</li>
-          <li>ABOUT US</li>
+          <Link to={"/About us"}><li>ABOUT US</li></Link>
           <li>CONTACT US</li>
           <li>SALES</li>
           <li>RENTS</li>

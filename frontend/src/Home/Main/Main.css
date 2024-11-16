@@ -1,3 +1,6 @@
+body{
+  box-sizing: border-box; 
+}
 .adj_main {
     height: calc(100vh - 120);
     width: 100%;
