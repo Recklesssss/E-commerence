@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Main.css';
 import Image from '../ImgContainer';
+import Bottom from './Bottom';
 
 function Main() {
   const [electronics, setElectronics] = useState([]);
@@ -36,11 +37,53 @@ function Main() {
       </div>
       
       <div className="furniture">
-        {/* Furniture items can be added here */}
+      <h5>Furniture</h5>
+        <div className="electronics__container">
+          {electronics.length > 0 ? (
+            electronics.map((item, index) => (
+              <div className="electronics__item" key={index}>
+                <img src={item.img_url} alt={item.name} />
+                <p>{item.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
       </div>
       
       <div className="agriculture">
-        {/* Agriculture items can be added here */}
+      <h5>Agriculture</h5>
+        <div className="electronics__container">
+          {electronics.length > 0 ? (
+            electronics.map((item, index) => (
+              <div className="electronics__item" key={index}>
+                <img src={item.img_url} alt={item.name} />
+                <p>{item.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
+      </div>
+      <div className="vehcle">
+      <h5>Vehicle</h5>
+        <div className="electronics__container">
+          {electronics.length > 0 ? (
+            electronics.map((item, index) => (
+              <div className="electronics__item" key={index}>
+                <img src={item.img_url} alt={item.name} />
+                <p>{item.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
+      </div>
+      <div>
+        <Bottom/>
       </div>
     </div>
   );
