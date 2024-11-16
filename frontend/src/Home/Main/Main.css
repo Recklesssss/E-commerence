@@ -1,30 +1,127 @@
+/* Main container */
 .adj_main {
     height: calc(100vh - 120px);
     width: 100%;
     position: absolute;
     bottom: 0;
-    background-color: yellow;
-    display: grid;
-    grid-template-rows: 2fr 1fr 1fr 1fr;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
     z-index: -1;
   }
-.banner{
-    background-color: aqua;
+  
+  /* Banner styling */
+  .banner {
     display: flex;
     align-items: center;
-}
-.banner img{
-    height:350px ;
+  }
+  
+  .banner img {
+    height: 350px;
     width: 100%;
-    object-fit: fill;
-}
-.electronics{
-    background-color: blueviolet;
-}
-.furniture{
-    background-color: lightgreen;
-}
-.agriculture{
-    background-color: lightpink;
-}
+    object-fit: cover; /* Ensures the image is properly scaled */
+  }
+  
+  /* Electronics section */
+  .electronics {
+    padding: 20px 0; 
+  }
+  
+  .electronics h5 {
+    text-align: center;
+    font-size: 24px;
+  }
+  
+  /* Flex container for electronics items */
+  .electronics__container {
+    display: flex;
+    justify-content: flex-start; /* Aligns the items at the start */
+    gap: 15px;
+    height: auto;
+    width: 100%;  /* Ensures it takes up the available width */
+    padding: 20px;
+    overflow-x: auto;  /* Allows horizontal scrolling */
+    -webkit-overflow-scrolling: touch;  /* Smooth scrolling on mobile */
+    scroll-behavior: smooth;
+    box-sizing: border-box;  /* Prevents the items from overflowing */
+  }
+  
+  /* Individual item styling */
+  .electronics__item {
+    width: 160px;
+    height: 210px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    flex-shrink: 0; /* Prevent shrinking */
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .electronics__item:hover {
+    transform: scale(1.08);
+  }
+  
+  .electronics__item img {
+    width: 100%;
+    height: 150px; /* Adjust image size */
+    object-fit: cover;
+  }
+  
+  /* Hide scrollbar completely but keep functionality */
+  .electronics__container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for webkit browsers */
+  }
+  
+  .electronics__container {
+    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  }
+  
+  /* Responsive design */
+  @media screen and (max-width: 1024px) {
+    .electronics__item {
+      width: 140px; /* Adjust item width on smaller screens */
+      height: 180px;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .electronics__container {
+        display: flex;
+        justify-content: flex-start; /* Aligns the items at the start */
+        gap: 15px;
+        height: auto;
+        width: 115%;  /* Ensures it takes up the available width */
+        padding: 20px;
+        overflow-x: auto;  /* Allows horizontal scrolling */
+        -webkit-overflow-scrolling: touch;  /* Smooth scrolling on mobile */
+        scroll-behavior: smooth;
+        box-sizing: border-box;  /* Prevents the items from overflowing */
+      }
+  
+    .electronics__item {
+      width: 120px; /* Reduce item size for small screens */
+      height: 160px;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .electronics__container {
+        display: flex;
+        justify-content: flex-start; /* Aligns the items at the start */
+        gap: 15px;
+        height: auto;
+        width: 135%;  /* Ensures it takes up the available width */
+        padding: 20px;
+        overflow-x: auto;  /* Allows horizontal scrolling */
+        -webkit-overflow-scrolling: touch;  /* Smooth scrolling on mobile */
+        scroll-behavior: smooth;
+        box-sizing: border-box;  /* Prevents the items from overflowing */
+      }
+  
+    .electronics__item {
+      width: 100px; /* Further reduce item width on mobile */
+      height: 140px;
+    }
+  }
+  
