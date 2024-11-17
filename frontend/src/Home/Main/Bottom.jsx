@@ -7,7 +7,7 @@ function Bottom() {
     <div className="footer-content">
       <div className="about">
         <h3>About Us</h3>
-        <p>We are an e-commerce platform providing quality products at affordable prices.</p>
+        <p style={{color:"white"}}>We are an e-commerce platform providing quality products at affordable prices.</p>
       </div>
       <div className="links">
         <h3>Quick Links</h3>

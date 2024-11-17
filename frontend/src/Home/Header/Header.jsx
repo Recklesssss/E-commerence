@@ -45,7 +45,7 @@ function Header() {
           {/* Desktop view: User profile */}
           <div style={{ display: responsive ? 'none' : 'flex' }} className="user-profile">
             <div className="cart">My cart</div>
-            <div className="signin">Sign in & up</div>
+            <Link to={"/SignupSignin"}><div className="signin">Sign in & up</div></Link>
           </div>
           
           {/* Mobile view: Dropdown menu */}
@@ -56,7 +56,7 @@ function Header() {
               <div className="dropdown-menu">
                 <ul>
                   <li>My cart</li>
-                  <li>Sign in & up</li>
+                  <Link to={"/SignupSignin"}><li>Sign in & up</li></Link>
                 </ul>
               </div>
             )}
