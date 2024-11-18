@@ -3,11 +3,15 @@ import './header.css';
 import { CiMenuBurger } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { Link } from 'react-router-dom';
+import { useProduct } from '../../ProductContext';
 
 function Header() {
-  const [toggle, setToggle] = useState(false); // State to control dropdown visibility
-  const [responsive, setResponsive] = useState(window.innerWidth <= 1240); // State for responsiveness
-
+  const [toggle, setToggle] = useState(false); 
+  const [responsive, setResponsive] = useState(window.innerWidth <= 1240); 
+  const { categories, setCategories } = useProduct();
+  
+    
+  
   // Update responsiveness state based on window width
   const handleResize = () => {
     setResponsive(window.innerWidth <= 1240); // Toggle between mobile and desktop layout
@@ -67,7 +71,7 @@ function Header() {
       <div className="second__container">
         <div className="choice">
           <label htmlFor="choices">Categories</label>
-          <select id="choices" name="choices">
+          <select onChange={(e) => setCategories(e.target.value)} value={categories} id="choices" name="choices">
             <option value="electronics">Electronics Device</option>
             <option value="vehicles">Vehicles</option>
             <option value="furniture">Furniture</option>

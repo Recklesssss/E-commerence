@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './Main.css';
-import Image from '../ImgContainer';
 import Bottom from './Bottom';
+import { useProduct } from '../../ProductContext';
 
 function Main() {
-  const [electronics, setElectronics] = useState([]);
+  const { product, fetchProduct, categories, setCategories } = useProduct();
 
-  // Use useEffect to set the state after the component mounts
   useEffect(() => {
-    setElectronics(Image);
-  }, []);  // Empty array ensures this only runs once when the component mounts
+    fetchProduct();
+  }, [categories]);
 
   return (
     <div className='adj_main'>
@@ -23,11 +22,11 @@ function Main() {
       <div className="electronics">
         <h5>Electronics</h5>
         <div className="electronics__container">
-          {electronics.length > 0 ? (
-            electronics.map((item, index) => (
+          {product.length > 0 ? (
+            product.map((item, index) => (
               <div className="electronics__item" key={index}>
-                <img src={item.img_url} alt={item.name} />
-                <p>{item.name}</p>
+                <img src={item.image} alt={item.product_name} />
+                <p>{item.product_name}</p>
               </div>
             ))
           ) : (
@@ -39,11 +38,11 @@ function Main() {
       <div className="furniture">
       <h5>Furniture</h5>
         <div className="electronics__container">
-          {electronics.length > 0 ? (
-            electronics.map((item, index) => (
+          {product.length > 0 ? (
+            product.map((item, index) => (
               <div className="electronics__item" key={index}>
-                <img src={item.img_url} alt={item.name} />
-                <p>{item.name}</p>
+                <img src={item.image} alt={item.product_name} />
+                <p>{item.product_name}</p>
               </div>
             ))
           ) : (
@@ -55,11 +54,11 @@ function Main() {
       <div className="agriculture">
       <h5>Agriculture</h5>
         <div className="electronics__container">
-          {electronics.length > 0 ? (
-            electronics.map((item, index) => (
+          {product.length > 0 ? (
+            product.map((item, index) => (
               <div className="electronics__item" key={index}>
-                <img src={item.img_url} alt={item.name} />
-                <p>{item.name}</p>
+                <img src={item.image} alt={item.product_name} />
+                <p>{item.product_name}</p>
               </div>
             ))
           ) : (
@@ -70,11 +69,11 @@ function Main() {
       <div className="vehcle">
       <h5>Vehicle</h5>
         <div className="electronics__container">
-          {electronics.length > 0 ? (
-            electronics.map((item, index) => (
+          {product.length > 0 ? (
+            product.map((item, index) => (
               <div className="electronics__item" key={index}>
-                <img src={item.img_url} alt={item.name} />
-                <p>{item.name}</p>
+                <img src={item.image} alt={item.product_name} />
+                <p>{item.product_name}</p>
               </div>
             ))
           ) : (

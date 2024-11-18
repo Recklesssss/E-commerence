@@ -56,6 +56,23 @@ app.get('/signin', async (req, res) => {
     }
 });
 
+app.get("/getCatagories", async (req, res) => {
+    try {
+      const { categories } = req.query;
+      console.log("Categories received:", categories);
+      if (!categories) {
+        return res.status(400).json({ error: "Category is required" });
+      }
+  
+      const result = await pool.query(`SELECT * FROM products WHERE category = $1`, [categories]);
+      res.json(result.rows);
+    } catch (error) {
+      console.error("Error in API:", error);
+      res.status(500).json({ error: "Server Error" });
+    }
+  });
+  
+ 
 app.listen(5000, () => {
     console.log('Server running on http://localhost:5000');
 });
