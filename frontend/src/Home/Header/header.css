@@ -1,16 +1,69 @@
-li{
-  cursor: pointer;
+/* Prevent horizontal scroll on smaller screens */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
-.header {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  background-color: #1A1A1D;
-  height: 120px;
+
+/* Ensure all elements respect box-sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Limit containers to viewport width */
+.header, 
+.search-bar-container, 
+.second__container, 
+.Nav__bars {
+  max-width: 100%;
+  overflow: hidden;
+  
+}
+
+/* Ensure the dropdown or navigation items don't overflow */
+.dropdown-menu {
+  position: fixed; /* Prevent it from expanding the page */
+  right: 0;
+}
+
+/* For smaller screens, fix layout and padding */
+@media screen and (max-width: 957px) {
+  .search-bar-container {
+    width: 90%; /* Dynamically adjust width */
+    left: 5%; /* Center align */
+  }
+
+  .Nav__bars {
+    gap: 10px;
+  }
+
+  .second__container {
+    flex-wrap: wrap; /* Avoid overflow */
+    padding: 0 10px; /* Prevent extra space */
+  }
+}
+
+/* General Styles */
+li {
+  cursor: pointer;
 }
 
 a {
   text-decoration: none; 
   color: inherit; 
+}
+
+/* Header Styling */
+.header {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  background-color: #1A1A1D;
+  height: 120px;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 .top_nav {
@@ -22,8 +75,10 @@ a {
   padding: 20px;
   width: calc(100% - 70px);
   color: #fbc86b;
-  z-index: 1;
+  z-index: 5;
 }
+
+/* Search Bar */
 .search-bar-container {
   position: absolute;
   top: 20px;
@@ -48,6 +103,8 @@ a {
   border: 1px solid #ddd;
   font-size: 14px;
 }
+
+/* User Profile and Cart */
 .user-profile, .cart, .signin {
   display: flex;
   align-items: center;
@@ -61,13 +118,8 @@ a {
   width: 150px;
   margin-right: 10px;
 }
-.second__container {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  padding: 0px 140px;
-  margin-top: 80px;
-}
+
+/* Navigation Bars */
 .Nav__bars {
   padding-right: 10px;
   display: flex;
@@ -80,23 +132,16 @@ a {
   cursor: pointer;
 }
 
-.second__container label {
-  color: white;
-}
-.burger {
-  color: white;
-  height: 50px;
-  width: 30px;
-  cursor: pointer;
-}
+/* Dropdown Menu */
 .dropdown-menu {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: white;
   color: #1A1A1D;
   position: absolute;
-  top: 50px; 
+  top: 50px;
   right: 27px;
   width: 150px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -122,28 +167,53 @@ a {
   width: 100%;
 }
 
-@media screen and (max-width:1240px) {
+/* Burger Icon */
+.burger {
+  color: white;
+  height: 50px;
+  width: 30px;
+  cursor: pointer;
+}
+
+/* Second Container */
+.second__container {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 0px 140px;
+  position: relative;
+  top: 60px;
+  margin-top: 0px;
+}
+
+.second__container label {
+  color: white;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1240px) {
   .search-bar-container {
     left: 320px;
     width: 440px;
   }
 }
 
-@media screen and (max-width:930px) {
+@media screen and (max-width: 930px) {
   .search-bar-container {
     left: 250px;
     width: 440px;
   }
 }
 
-@media screen and (max-width:850px) {
+@media screen and (max-width: 850px) {
   .search-bar-container {
     left: 200px;
     width: 440px;
   }
+  
 }
 
-@media screen and (max-width:825px) {
+@media screen and (max-width: 825px) {
   .search-bar-container {
     left: 190px;
     width: 250px;
@@ -155,6 +225,7 @@ a {
     flex-direction: column;
     position: absolute;
     left: 10px;
+    z-index: 6;
   }
 
   .Nav__bars {
@@ -163,10 +234,11 @@ a {
     list-style: none;
     color: white;
     font-size: 18px;
+    z-index: 6;
   }
 }
 
-@media screen and (max-width:605px) {
+@media screen and (max-width: 605px) {
   .search-bar-container {
     left: 190px;
     width: 150px;
@@ -178,15 +250,17 @@ a {
     flex-direction: column;
     position: absolute;
     left: 10px;
-    z-index: 4;
+    z-index: 6;
   }
 
   .Nav__bars {
+    padding-left:40px;
     display: flex;
     gap: 10px;
     list-style: none;
     color: white;
     font-size: 12px;
+    z-index: 6;
   }
 
   .dropdown-menu {

@@ -72,6 +72,16 @@ app.get("/getCatagories", async (req, res) => {
     }
   });
   
+
+app.post("/postOrder",async (req,res)=>{
+    try {
+        const {product_id,user_id} = req.query;
+        const orders = await pool.query(`insert into orders(product_id,user_name) values($1,$2)`[product_id,user_id])
+    } catch (error) {
+        console.error(error)
+    }
+
+})
  
 app.listen(5000, () => {
     console.log('Server running on http://localhost:5000');

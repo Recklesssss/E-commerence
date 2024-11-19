@@ -7,7 +7,8 @@ const ProductContext = createContext();
 // Create a provider component
 export const ProductProvider = ({ children }) => {
   const [product, setProduct] = useState([]);
-  const [categories, setCategories] = useState("All");
+  const [categories, setCategories] = useState("electronics");
+  const [calculate,setCalculate]=useState({})
 
   const fetchProduct = async () => {
     try {
@@ -25,7 +26,7 @@ export const ProductProvider = ({ children }) => {
 
   return (
     <ProductContext.Provider
-      value={{ product, setProduct, categories, setCategories, fetchProduct }}
+      value={{ product, setProduct, categories, setCategories, fetchProduct , calculate,setCalculate}}
     >
       {children}
     </ProductContext.Provider>

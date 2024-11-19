@@ -3,6 +3,7 @@ import Home from './Home/Home';
 import About from './about us/About';
 import ContactUs from './contact/Contact';
 import SignupSignin from './signup/SignupSignin';
+import Cart from './cart/Cart';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 
 function App() {
@@ -10,6 +11,14 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
+        <Route
+        path='/Orders'
+        element = {
+          <>
+          <Cart/>
+          </>
+        }
+        />
         <Route
         path='/About us'
         element = {
