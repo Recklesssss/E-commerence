@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import './SignupSignin.css';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { useProduct } from '../ProductContext';
 
 const SignupSignin = () => {
+    const {userName,setUserName,fetchUserId} = useProduct()
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -31,6 +33,8 @@ const SignupSignin = () => {
                 email,
                 password,
             });
+            setUserName(name)
+            await fetchUserId();
             alert("Successfully signed up! ENJOY YOUR STAY!");
             navigate("/");
         } catch (error) {
@@ -46,6 +50,8 @@ const SignupSignin = () => {
             const response = await axios.get('http://localhost:5000/signin', {
                 params: { email, password },
             });
+            setUserName(response.data.name)
+            await fetchUserId();
             alert('Successfully logged in');
             navigate("/");
         } catch (error) {
@@ -60,7 +66,6 @@ const SignupSignin = () => {
             await handleSignIn(e);
         }
     };
-
     const [isSignUp, setIsSignUp] = useState(false);
 
     const toggleForm = () => setIsSignUp(!isSignUp);

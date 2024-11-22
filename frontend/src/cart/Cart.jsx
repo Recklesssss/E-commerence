@@ -2,10 +2,42 @@ import React, { useState,useEffect } from 'react';
 import "./Cart.css";
 import Header from '../Home/Header/Header';
 import { useProduct } from '../ProductContext';
+import axios from 'axios';
 
 function Cart() {
-  const { calculate, setCalculate } = useProduct();
+  const { calculate, setCalculate , user_id} = useProduct();
   const [totalPrice, setTotalPrice] = useState();
+  const [productId,setProductId] = useState([])
+  const postOrder = async () => {
+    // Validate input
+    if (!user_id) {
+      alert("User ID is missing. Please log in.");
+      return;
+    }
+  
+    if (productId.length === 0) {
+      alert("No products in the cart.");
+      return;
+    }
+  
+    try {
+      const response = await axios.post("http://localhost:5000/postOrder", {
+        product_id: productId,
+        user_id: user_id,
+      });
+      console.log("Order posted successfully:", response.data);
+      alert("Order placed successfully!");
+    } catch (error) {
+      console.error("Error posting order:", error);
+      alert("Failed to place the order. Please try again.");
+    }
+  };
+  
+  useEffect(() => {
+    const ids = Object.values(calculate).map((item) => item.product_id);
+    setProductId(ids);
+  }, [calculate]);
+  
 
   useEffect(() => {
     const newTotalPrice = Object.values(calculate).reduce((acc, item) => {
@@ -62,7 +94,11 @@ function Cart() {
         )}
         <span>{` | Total Price: $${totalPrice}`}</span>
         {console.log(totalPrice)}
-        
+            <div>
+              <button onClick={postOrder} className="post-order-btn">
+                Place Order
+              </button>
+            </div>
       </div>
     </div>
   );

@@ -5,12 +5,30 @@ import ContactUs from './contact/Contact';
 import SignupSignin from './signup/SignupSignin';
 import Cart from './cart/Cart';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import Sales from './sales/Sales';
+import Rents from './rents/Rents';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
+        <Route
+        path='/rents'
+        element = {
+          <>
+          <Rents/>
+          </>
+        }
+        />
+        <Route
+        path='/sales'
+        element = {
+          <>
+          <Sales/>
+          </>
+        }
+        />
         <Route
         path='/Orders'
         element = {

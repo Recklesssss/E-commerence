@@ -82,12 +82,11 @@ function Header() {
           </select>
         </div>
         <ul className="Nav__bars">
-          <li>HOME</li>
-          <li>SHOP</li>
+          <Link to={"/"}><li>HOME</li></Link>
           <Link to={"/About us"}><li>ABOUT US</li></Link>
           <Link to={"/Contact us"}><li>CONTACT US</li></Link>
-          <li>SALES</li>
-          <li>RENTS</li>
+          <Link to={"/sales"}><li>SALES</li></Link>
+          <Link to={"/rents"}><li>RENTS</li></Link>
         </ul>
       </div>
     </div>

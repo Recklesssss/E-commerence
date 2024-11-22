@@ -43,16 +43,16 @@ app.get('/signin', async (req, res) => {
         if (result.rows.length > 0) {
             const isMatch = await bcrypt.compare(password, result.rows[0].password);
             if (isMatch) {
-                res.json({ message: 'User logged in successfully', user: result.rows[0] });
+                return res.json({ message: 'User logged in successfully', user: result.rows[0] });
             } else {
-                res.status(401).json({ message: 'Invalid email or password' });
+                return res.status(401).json({ message: 'Invalid email or password' });
             }
         } else {
-            res.status(401).json({ message: 'Invalid email or password' });
+            return res.status(401).json({ message: 'Invalid email or password' });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).send('Server error');
+        return res.status(500).send('Server error');
     }
 });
 
@@ -75,13 +75,46 @@ app.get("/getCatagories", async (req, res) => {
 
 app.post("/postOrder",async (req,res)=>{
     try {
-        const {product_id,user_id} = req.query;
-        const orders = await pool.query(`insert into orders(product_id,user_name) values($1,$2)`[product_id,user_id])
+        const {product_id,user_id} = req.body;
+        const orders = await pool.query(`insert into orders(product_id,user_id) values($1,$2)`,[product_id,user_id])
     } catch (error) {
         console.error(error)
     }
 
+});
+
+app.get("/getUserId", async (req, res) => {
+    try {
+        const { name } = req.query;
+
+        if (!name) {
+            return res.status(400).json({ error: "Name is required to fetch user ID" });
+        }
+
+        const userIdResult = await pool.query(`SELECT user_id FROM users WHERE name = $1`, [name]);
+
+        if (userIdResult.rows.length === 0) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json({ user_id: userIdResult.rows[0].user_id }); 
+    } catch (error) {
+        console.error("Error in /getUserId:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+app.get("/sales",async(req,res)=>{
+    const sale = "sale"
+    const sales = await pool.query(`select * from products where product_type = $1`,[sale])
+    res.json(sales.rows)
 })
+app.get("/rents",async(req,res) =>{
+    const rent = "rent"
+    const rents =await pool.query(`select * from products where product_type = $1`,[rent])
+    res.json(rents.rows);
+})
+
  
 app.listen(5000, () => {
     console.log('Server running on http://localhost:5000');
