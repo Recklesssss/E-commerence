@@ -22,7 +22,6 @@ function Cart() {
   
     try {
       const response = await axios.post("http://localhost:5000/postOrder", {
-        product_id: productId,
         user_id: user_id,
       });
       console.log("Order posted successfully:", response.data);

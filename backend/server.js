@@ -75,8 +75,8 @@ app.get("/getCatagories", async (req, res) => {
 
 app.post("/postOrder",async (req,res)=>{
     try {
-        const {product_id,user_id} = req.body;
-        const orders = await pool.query(`insert into orders(product_id,user_id) values($1,$2)`,[product_id,user_id])
+        const {user_id} = req.body;
+        const orders = await pool.query(`insert into orders(user_id,order_date) values($1,NOW())`,[user_id])
     } catch (error) {
         console.error(error)
     }
@@ -85,8 +85,7 @@ app.post("/postOrder",async (req,res)=>{
 
 app.get("/getUserId", async (req, res) => {
     try {
-        const { name } = req.query;
-
+        const { name } = req.query; 
         if (!name) {
             return res.status(400).json({ error: "Name is required to fetch user ID" });
         }
@@ -115,7 +114,7 @@ app.get("/rents",async(req,res) =>{
     res.json(rents.rows);
 })
 
- 
+  
 app.listen(5000, () => {
     console.log('Server running on http://localhost:5000');
 });
