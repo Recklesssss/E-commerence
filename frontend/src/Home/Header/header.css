@@ -126,10 +126,14 @@ a {
   gap: 30px;
   list-style: none;
   color: white;
+  z-index: 6;
 }
 
 .Nav__bars li {
   cursor: pointer;
+}
+.Nav__bars  li:hover{
+  color: #DF62FC;
 }
 
 /* Dropdown Menu */
@@ -189,6 +193,43 @@ a {
 .second__container label {
   color: white;
 }
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-icon {
+  font-size: 25px;
+  color: #fbc86b;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification {
+  position: relative;
+}
+
+.notification::after {
+  content: '3'; /* Example notification count */
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
 
 /* Responsive Design */
 @media screen and (max-width: 1240px) {
@@ -209,6 +250,9 @@ a {
   .search-bar-container {
     left: 200px;
     width: 440px;
+  }
+  .user-actions {
+    display: none; /* Hide desktop actions in mobile view */
   }
   
 }
@@ -239,6 +283,10 @@ a {
 }
 
 @media screen and (max-width: 605px) {
+  .notification-icon,
+  .profile-icon {
+    font-size: 20px;
+  }
   .search-bar-container {
     left: 190px;
     width: 150px;

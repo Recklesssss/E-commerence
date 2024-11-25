@@ -82,6 +82,18 @@ app.post("/postOrder",async (req,res)=>{
     }
 
 });
+app.post("/postOrderproduct",async (req,res)=>{
+    try {
+        const {user_id} = req.body;
+        const {product_id} = req.body;
+        console.log(product_id)
+        const orders = await pool.query(`select order_id from orders where user_id = $1 `,[user_id])
+        const productOrders = await pool.query(`insert into order_products(product_id,order_id) values($1,$2)`,[orders,product_id])
+    } catch (error) {
+        console.error(error)
+    }
+
+});
 
 app.get("/getUserId", async (req, res) => {
     try {

@@ -1,43 +1,21 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./Cart.css";
 import Header from '../Home/Header/Header';
 import { useProduct } from '../ProductContext';
 import axios from 'axios';
 
 function Cart() {
-  const { calculate, setCalculate , user_id} = useProduct();
-  const [totalPrice, setTotalPrice] = useState();
-  const [productId,setProductId] = useState([])
-  const postOrder = async () => {
-    // Validate input
-    if (!user_id) {
-      alert("User ID is missing. Please log in.");
-      return;
-    }
-  
-    if (productId.length === 0) {
-      alert("No products in the cart.");
-      return;
-    }
-  
-    try {
-      const response = await axios.post("http://localhost:5000/postOrder", {
-        user_id: user_id,
-      });
-      console.log("Order posted successfully:", response.data);
-      alert("Order placed successfully!");
-    } catch (error) {
-      console.error("Error posting order:", error);
-      alert("Failed to place the order. Please try again.");
-    }
-  };
-  
+  const { calculate, setCalculate, user_id } = useProduct();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [productId, setProductId] = useState([]);
+
+  // Effect to set product ids based on the calculate object
   useEffect(() => {
     const ids = Object.values(calculate).map((item) => item.product_id);
     setProductId(ids);
   }, [calculate]);
-  
 
+  // Effect to calculate the total price
   useEffect(() => {
     const newTotalPrice = Object.values(calculate).reduce((acc, item) => {
       const itemQuantity = item.quantity || 0; // Default quantity to 0 if undefined
@@ -46,6 +24,36 @@ function Cart() {
     }, 0);
     setTotalPrice(newTotalPrice);
   }, [calculate]);
+
+  // Post Order function
+  const postOrder = async () => {
+    // Validate input
+    if (!user_id) {
+      alert("User ID is missing. Please log in.");
+      return;
+    }
+
+    if (productId.length === 0) {
+      alert("No products in the cart.");
+      return;
+    }
+
+    try {
+      // Post main order
+      const orderResponse = await axios.post("http://localhost:5000/postOrder", { user_id });
+      console.log("Order posted successfully:", orderResponse.data);
+      alert("Order placed successfully!");
+
+      // Post order products
+      const productResponse = await axios.post("http://localhost:5000/postOrderproduct", { user_id, product_id: productId });
+      console.log("Product order placed successfully:", productResponse.data);
+      alert("Product added to the order successfully!");
+
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Failed to place the order. Please try again.");
+    }
+  };
 
   // Remove product from the cart
   const handleRemoveProduct = (index) => {
@@ -74,10 +82,10 @@ function Cart() {
             return (
               <div key={index} className="cart-item">
                 <h5>{product.name}</h5>
-                <p>{`Price: $ ${product.price}`}</p>
+                <p>{`Price: $${product.price}`}</p>
                 <img src={product.image} alt={product.name} />
                 <span>{`Quantity: ${product.quantity}`}</span>
-                
+
                 <button
                   onClick={() => handleRemoveProduct(index)}
                   className="remove-btn"
@@ -87,17 +95,15 @@ function Cart() {
               </div>
             );
           })
-          
         ) : (
           <p>Your cart is empty</p>
         )}
         <span>{` | Total Price: $${totalPrice}`}</span>
-        {console.log(totalPrice)}
-            <div>
-              <button onClick={postOrder} className="post-order-btn">
-                Place Order
-              </button>
-            </div>
+        <div>
+          <button onClick={postOrder} className="post-order-btn">
+            Place Order
+          </button>
+        </div>
       </div>
     </div>
   );

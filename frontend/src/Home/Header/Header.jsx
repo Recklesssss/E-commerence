@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './header.css';
 import { CiMenuBurger } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
+import { FaBell, FaUserCircle } from "react-icons/fa"; // Icons for notifications and profile
 import { Link } from 'react-router-dom';
 import { useProduct } from '../../ProductContext';
 
@@ -9,32 +10,28 @@ function Header() {
   const [toggle, setToggle] = useState(false); 
   const [responsive, setResponsive] = useState(window.innerWidth <= 1240); 
   const { categories, setCategories } = useProduct();
-  
-    
-  
-  // Update responsiveness state based on window width
+
   const handleResize = () => {
-    setResponsive(window.innerWidth <= 1240); // Toggle between mobile and desktop layout
+    setResponsive(window.innerWidth <= 1240); 
   };
 
   useEffect(() => {
-    // Add event listener for window resize
     window.addEventListener("resize", handleResize);
-
-    // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   const toggleHandler = () => {
-    setToggle(prevToggle => !prevToggle); // Toggle the dropdown visibility on click
+    setToggle((prevToggle) => !prevToggle);
   };
 
   return (
-    <div className='header'>
+    <div className="header">
+      {/* Top navigation */}
       <div className="top_nav">
         <div className="buttons">
+          {/* Search Bar */}
           <div className="search-bar-container">
             <CiSearch className="search-icon" />
             <input
@@ -43,35 +40,54 @@ function Header() {
               className="search-bar"
             />
           </div>
-        </div>  
+        </div>
 
-        <div className="toggle"> 
-          {/* Desktop view: User profile */}
-          <div style={{ display: responsive ? 'none' : 'flex' }} className="user-profile">
-            <div className="cart">My cart</div>
-            <Link to={"/SignupSignin"}><div className="signin">Sign in & up</div></Link>
+        <div className="toggle">
+          {/* Desktop View */}
+          <div style={{ display: responsive ? 'none' : 'flex' }} className="user-actions">
+            <div className="notification">
+              <FaBell className="notification-icon" />
+            </div>
+            <div className="cart">My Cart</div>
+            <Link to={"/SignupSignin"}>
+              <div className="signin">Sign in & up</div>
+            </Link>
+            <div className="profile">
+              <FaUserCircle className="profile-icon" />
+            </div>
           </div>
-          
-          {/* Mobile view: Dropdown menu */}
-          <div style={{ display: responsive ? 'block' : 'none' }} className='dropdown'>
-            <CiMenuBurger onClick={toggleHandler} className='burger'/>
-            {/* Show the dropdown when toggle is true */}
+
+          {/* Mobile View */}
+          <div style={{ display: responsive ? 'block' : 'none' }} className="dropdown">
+            <CiMenuBurger onClick={toggleHandler} className="burger" />
             {toggle && (
               <div className="dropdown-menu">
                 <ul>
-                  <Link to={"/Orders"}><li>My cart</li></Link>
-                  <Link to={"/SignupSignin"}><li>Sign in & up</li></Link>
+                  <li>
+                    <Link to={"/Orders"}>My Cart</Link>
+                  </li>
+                  <li>
+                    <Link to={"/SignupSignin"}>Sign in & up</Link>
+                  </li>
+                  <li>Notifications</li>
+                  <li>Profile</li>
                 </ul>
               </div>
             )}
           </div>
-        </div> 
+        </div>
       </div>
 
+      {/* Categories and Nav Links */}
       <div className="second__container">
         <div className="choice">
           <label htmlFor="choices">Categories</label>
-          <select onChange={(e) => setCategories(e.target.value)} value={categories} id="choices" name="choices">
+          <select
+            onChange={(e) => setCategories(e.target.value)}
+            value={categories}
+            id="choices"
+            name="choices"
+          >
             <option value="electronics">Electronics Device</option>
             <option value="vehicles">Vehicles</option>
             <option value="furniture">Furniture</option>
