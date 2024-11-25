@@ -216,7 +216,7 @@ a {
 }
 
 .notification::after {
-  content: '3'; /* Example notification count */
+  content: '1'; /* Example notification count */
   position: absolute;
   top: -5px;
   right: -5px;
@@ -230,6 +230,57 @@ a {
   align-items: center;
   border-radius: 50%;
 }
+/* Profile Modal */
+.profile-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.profile-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.profile-modal-content h3 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.profile-modal-content p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #666;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.close-modal:hover {
+  color: red;
+}
+
 
 /* Responsive Design */
 @media screen and (max-width: 1240px) {

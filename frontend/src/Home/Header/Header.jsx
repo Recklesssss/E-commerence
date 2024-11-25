@@ -7,12 +7,21 @@ import { Link } from 'react-router-dom';
 import { useProduct } from '../../ProductContext';
 
 function Header() {
-  const [toggle, setToggle] = useState(false); 
-  const [responsive, setResponsive] = useState(window.innerWidth <= 1240); 
+  const [toggle, setToggle] = useState(false);
+  const [responsive, setResponsive] = useState(window.innerWidth <= 1240);
+  const [showProfile, setShowProfile] = useState(false); // State to control profile modal
   const { categories, setCategories } = useProduct();
 
   const handleResize = () => {
-    setResponsive(window.innerWidth <= 1240); 
+    setResponsive(window.innerWidth <= 1240);
+  };
+
+  const toggleHandler = () => {
+    setToggle((prevToggle) => !prevToggle);
+  };
+
+  const toggleProfile = () => {
+    setShowProfile((prevShowProfile) => !prevShowProfile);
   };
 
   useEffect(() => {
@@ -21,10 +30,6 @@ function Header() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  const toggleHandler = () => {
-    setToggle((prevToggle) => !prevToggle);
-  };
 
   return (
     <div className="header">
@@ -52,7 +57,7 @@ function Header() {
             <Link to={"/SignupSignin"}>
               <div className="signin">Sign in & up</div>
             </Link>
-            <div className="profile">
+            <div className="profile" onClick={toggleProfile}>
               <FaUserCircle className="profile-icon" />
             </div>
           </div>
@@ -70,13 +75,29 @@ function Header() {
                     <Link to={"/SignupSignin"}>Sign in & up</Link>
                   </li>
                   <li>Notifications</li>
-                  <li>Profile</li>
+                  <li onClick={toggleProfile}>Profile</li>
                 </ul>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Profile Modal */}
+      {showProfile && (
+        <div className="profile-modal">
+          <div className="profile-modal-content">
+            <button className="close-modal" onClick={toggleProfile}>
+              &times;
+            </button>
+            <h3>User Profile</h3>
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Email:</strong> johndoe@example.com</p>
+            <p><strong>Member since:</strong> January 2021</p>
+            {/* Add more user details here */}
+          </div>
+        </div>
+      )}
 
       {/* Categories and Nav Links */}
       <div className="second__container">
