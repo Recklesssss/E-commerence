@@ -1,4 +1,15 @@
-/* General Styles */
+.over_the {
+    animation: fadeIn 0.5s ease-in; /* Example of animation with a duration of 0.5s */
+    transition: opacity 0.08s ease-in; /* Transition for opacity */
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 .rent {
     font-family: Arial, sans-serif;
     color: #333;
@@ -8,8 +19,8 @@
 }
 
 /* Button Styles */
-button {
-    background-color: #28a745;
+.form_container_rents button {
+    background-color: #007bff;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -19,12 +30,12 @@ button {
     margin-bottom: 20px;
 }
 
-button:hover {
-    background-color: #218838;
+.form_container_rents button:hover {
+    background-color: #0056b3;
 }
 
 /* Form Container */
-.form_container_rent {
+.form_container_rents {
     background: #f9f9f9;
     padding: 20px;
     border: 1px solid #ddd;
@@ -48,8 +59,31 @@ form textarea {
 }
 
 form input[type="file"] {
-    align-self: flex-start;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #e9ecef;
+    border-radius: 5px;
     cursor: pointer;
+}
+
+form input[type="file"]:hover {
+    background: #d6d6d6;
+}
+
+form button[type="submit"] {
+    align-self: flex-start;
+    width: 100px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+    background-color: #218838;
 }
 
 /* Rents Container */

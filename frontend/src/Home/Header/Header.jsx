@@ -53,7 +53,7 @@ function Header() {
             <div className="notification">
               <FaBell className="notification-icon" />
             </div>
-            <div className="cart">My Cart</div>
+            <Link to={"/Orders"}><div className="cart">My Cart</div></Link>
             <Link to={"/SignupSignin"}>
               <div className="signin">Sign in & up</div>
             </Link>

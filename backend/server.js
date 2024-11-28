@@ -175,6 +175,39 @@ app.post("/postSales",upload.single("product_picture"), async (req, res) => {
     }
   });
 
+  app.post("/postRents", upload.single("product_picture"), async (req, res) => {
+    try {
+      const { title, content, price } = req.body;
+      const product_picture = req.file ? req.file.filename : null;
+      const userId = 9; 
+      const category = "rent"
+      const product_type = "rent" 
+  
+      if (!title || !content || !price) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
+  
+      // Insert into posts table
+      const postResult = await pool.query(
+        `INSERT INTO posts(title, content, product_picture, created_at, category, price, user_id) 
+         VALUES ($1, $2, $3, NOW(), $4, $5, $6) RETURNING *`,
+        [title, content, product_picture, category, price, userId]
+      );
+  
+      // Insert into products table
+      const productResult = await pool.query(
+        `INSERT INTO products(product_name, product_type, product_picture, price) 
+         VALUES ($1, $2, $3, $4) RETURNING *`,
+        [title, product_type, product_picture, price]
+      );
+  
+      res.status(201).json({ post: postResult.rows[0], product: productResult.rows[0] });
+    } catch (error) {
+      console.error("Error posting rent:", error.message);
+      res.status(500).json({ message: "Error posting rent" });
+    }
+  });
+
   app.get("/uploads/:filename", (req, res) => {
     try {
       const filePath = path.join(__dirname, "uploads", req.params.filename);
