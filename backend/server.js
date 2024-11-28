@@ -3,12 +3,27 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
-
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const sharp = require('sharp');
+const os = require('os');
 
 const app = express();
-
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/'); // Adjust the path where files should be saved
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname); // Set file name to avoid overwriting
+    }
+  });
+  const upload = multer({ storage });
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
+
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -119,14 +134,64 @@ app.get("/sales",async(req,res)=>{
     const sale = "sale"
     const sales = await pool.query(`select * from products where product_type = $1`,[sale])
     res.json(sales.rows)
-})
-app.get("/rents",async(req,res) =>{
+}) 
+app.get("/rents",async(req,res) =>{ 
     const rent = "rent"
     const rents =await pool.query(`select * from products where product_type = $1`,[rent])
     res.json(rents.rows);
 })
 
+// POST route for adding sale (posts and products)
+app.post("/postSales",upload.single("product_picture"), async (req, res) => {
+    try {
+      const { title, content, price,category } = req.body;
+      const product_picture = req.file ? req.file.filename: null;
+      const userId = 9;
   
+      console.log("Request body:", req.body); // Debug request body
+      console.log("Uploaded file:", req.file); // Debug file upload
+  
+      if (!title || !content || !price) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
+  
+      // Insert into posts table
+      const postResult = await pool.query(
+        `INSERT INTO posts(title, content, product_picture, created_at, category, price, user_id) 
+         VALUES ($1, $2, $3, NOW(), $4, $5, $6) RETURNING *`,
+        [title, content, product_picture, category, price, userId]
+      );
+  
+      const productResult = await pool.query(
+        `INSERT INTO products(product_name, category, product_picture, price) 
+         VALUES ($1, $2, $3, $4) RETURNING *`,
+        [title, category, product_picture, price]
+      );
+  
+      res.status(201).json({ post: postResult.rows[0], product: productResult.rows[0] });
+    } catch (error) {
+      console.error("Error posting sale:", error.message); // Log error message
+      res.status(500).json({ message: "Error posting sale" });
+    }
+  });
+
+  app.get("/uploads/:filename", (req, res) => {
+    try {
+      const filePath = path.join(__dirname, "uploads", req.params.filename);
+  
+      // Check if file exists
+      if (!fs.existsSync(filePath)) {
+        return res.status(404).send("File not found");
+      }
+  
+      // Serve the file
+      res.sendFile(filePath);
+    } catch (error) {
+      console.error("Error serving file:", error.message);
+      res.status(500).send("Error fetching file");
+    }
+  });
+
 app.listen(5000, () => {
     console.log('Server running on http://localhost:5000');
 });

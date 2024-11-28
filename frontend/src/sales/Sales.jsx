@@ -6,6 +6,40 @@ import "./Sales.css";
 function Sales() {
   const [toggleForm, setToggleForm] = useState(false);
   const [sale, setSale] = useState([]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [productPicture, setProductPicture] = useState(null); // Use null for no file initially
+  const [price, setPrice] = useState("");
+
+  const PostSales = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      formData.append("price", parseInt(price)); // Ensure price is a number
+      if (productPicture) {
+        formData.append("product_picture", productPicture);
+      }
+  
+      // Post data to the backend
+      const response = await axios.post("http://localhost:5000/postSales", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Ensure proper headers
+        },
+      });
+  
+      console.log("Sales posted successfully:", response.data);
+      setTitle("");
+      setContent("");
+      setPrice("");
+      setProductPicture(null);
+      fetchSalesData(); // Refresh sales data
+    } catch (error) {
+      console.error("Error posting sale:", error.response?.data || error.message);
+    }
+  };
+  
 
   const toggleFormFun = () => {
     setToggleForm((prev) => !prev);
@@ -16,7 +50,7 @@ function Sales() {
       const response = await axios.get("http://localhost:5000/sales");
       setSale(response.data);
     } catch (error) {
-      console.error("Error fetching sales data:", error);
+      console.error("Error fetching sales data:", error.response?.data || error.message);
     }
   };
 
@@ -26,36 +60,61 @@ function Sales() {
 
   return (
     <div className="final_sale">
-        <Header />
-    <div className="sale">
-      
-      <button onClick={toggleFormFun}>Post Sales</button>
-      {toggleForm && (
-        <div className="form_container_sale">
-          <form>
-            <input type="text" placeholder="Enter product name" />
-            <input type="file"  alt="Upload" />
-            <textarea placeholder="Enter product description"></textarea>
-          </form>
-        </div>
-      )}
-      <div className="container_of_sales">
-        <div className="sales_container">
-          {sale.length > 0 ? (
-            sale.map((item, index) => (
-              <div key={index}>
-                <h3>{item.product_name}</h3>
-                <img src={item.image} alt={item.product_name} />
-                <h5>{item.category}</h5>
-                <h5>${item.price}</h5>
-              </div>
-            ))
-          ) : (
-            <p>Loading...</p>
-          )}
+      <Header />
+      <div className="sale">
+        <button onClick={toggleFormFun}>Post Sales</button>
+        {toggleForm && (
+          <div className="form_container_sale">
+            <form onSubmit={PostSales}>
+              <input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                type="text"
+                placeholder="Enter product name"
+                required
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setProductPicture(e.target.files[0])}
+              />
+              <input
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                type="number"
+                placeholder="Enter a price"
+                required
+              />
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Enter product description"
+                required
+              />
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        )}
+        <div className="container_of_sales">
+          <div className="sales_container">
+            {sale.length > 0 ? (
+              sale.map((item, index) => (
+                <div key={index}>
+                  <h3>{item.product_name}</h3>
+                  <img
+                    src={item.image|| `http://localhost:5000/uploads/${item.product_picture}`}
+                    alt={item.product_name}
+                  />
+                  <h5>{item.category}</h5>
+                  <h5>${item.price}</h5>
+                </div>
+              ))
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }
