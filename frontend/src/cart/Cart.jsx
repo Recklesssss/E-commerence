@@ -8,6 +8,7 @@ function Cart() {
   const { calculate, setCalculate, user_id } = useProduct();
   const [totalPrice, setTotalPrice] = useState(0);
   const [productId, setProductId] = useState([]);
+  const [quantity,setQuantity] = useState(0);
 
   // Effect to set product ids based on the calculate object
   useEffect(() => {
@@ -32,22 +33,21 @@ function Cart() {
       alert("User ID is missing. Please log in.");
       return;
     }
-
+    const orderItems = Object.values(calculate).map((item) => ({
+      quantity: item.quantity,
+      product_id:item.product_id,
+    }));
     if (productId.length === 0) {
       alert("No products in the cart.");
       return;
     }
 
     try {
-      // Post main order
-      const orderResponse = await axios.post("http://localhost:5000/postOrder", { user_id });
-      console.log("Order posted successfully:", orderResponse.data);
-      alert("Order placed successfully!");
-
-      // Post order products
-      const productResponse = await axios.post("http://localhost:5000/postOrderproduct", { user_id, product_id: productId });
+      const productResponse = await axios.post("http://localhost:5000/postOrder", { user_id,orderItems,total:totalPrice });
+      console.log(orderItems)
       console.log("Product order placed successfully:", productResponse.data);
-      alert("Product added to the order successfully!");
+      console.log("sucesss")
+      alert("order added to the product successfully!");
 
     } catch (error) {
       console.error("Error placing order:", error);
@@ -85,7 +85,6 @@ function Cart() {
                 <p>{`Price: $${product.price}`}</p>
                 <img src={product.image} alt={product.name} />
                 <span>{`Quantity: ${product.quantity}`}</span>
-
                 <button
                   onClick={() => handleRemoveProduct(index)}
                   className="remove-btn"

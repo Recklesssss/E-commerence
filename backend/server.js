@@ -90,20 +90,14 @@ app.get("/getCatagories", async (req, res) => {
 
 app.post("/postOrder",async (req,res)=>{
     try {
-        const {user_id} = req.body;
-        const orders = await pool.query(`insert into orders(user_id,order_date) values($1,NOW())`,[user_id])
-    } catch (error) {
-        console.error(error)
-    }
-
-});
-app.post("/postOrderproduct",async (req,res)=>{
-    try {
-        const {user_id} = req.body;
-        const {product_id} = req.body;
-        console.log(product_id)
-        const orders = await pool.query(`select order_id from orders where user_id = $1 `,[user_id])
-        const productOrders = await pool.query(`insert into order_products(product_id,order_id) values($1,$2)`,[orders,product_id])
+        const {user_id,orderItems,total} = req.body;
+        
+        const orders = await pool.query(`INSERT INTO orders (user_id, order_date) VALUES ($1, NOW()) RETURNING order_id;`,[user_id])
+        const order_id = orders.rows[0].order_id;
+        for (const item of orderItems) {
+          const { quantity,product_id } = item;
+        const productOrders = await pool.query(`insert into order_products(product_id,order_id,quantity,total) values($1,$2,$3,$4)`,[product_id,order_id,quantity,total])
+        }
     } catch (error) {
         console.error(error)
     }

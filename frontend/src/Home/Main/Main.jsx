@@ -8,10 +8,11 @@ function Main() {
   const [show,setShow] = useState({})
   
 
-  const handleIncrement = (index, price, name, image) => {
+  const handleIncrement = (product_id,index, price, name, image) => {
     setCalculate(prev => ({
       ...prev,
       [index]: {
+        product_id,
         quantity: (prev[index]?.quantity || 0) + 1,
         price,
         name,
@@ -21,7 +22,7 @@ function Main() {
   };
   
 
-  const handleDecrement = (index, price, name, image) => {
+  const handleDecrement = (product_id,index, price, name, image) => {
     setCalculate(prev => {
       const updated = { ...prev };
       const newQuantity = Math.max((updated[index]?.quantity || 0) - 1, 0);
@@ -29,6 +30,7 @@ function Main() {
         delete updated[index];
       } else {
         updated[index] = {
+          product_id,
           quantity: newQuantity,
           price,
           name,
@@ -86,9 +88,9 @@ function Main() {
                     display: show[index] ? "flex" : "none",
                   }}
                 >
-                  <button onClick={()=>handleDecrement(index,item.price,item.product_name,item.image)} className='plus'>-</button>
+                  <button onClick={()=>handleDecrement(item.product_id,index,item.price,item.product_name,item.image)} className='plus'>-</button>
                     <h5>{calculate[index]?.quantity || 0}</h5>
-                  <button onClick = {()=>handleIncrement(index,item.price,item.product_name,item.image)} className='minus'>+</button>
+                  <button onClick = {()=>handleIncrement(item.product_id,index,item.price,item.product_name,item.image)} className='minus'>+</button>
                 </div>
               </div>
             ))
