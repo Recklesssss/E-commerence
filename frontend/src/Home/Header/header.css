@@ -213,10 +213,11 @@ a {
 
 .notification {
   position: relative;
+  cursor: pointer;
 }
 
 .notification::after {
-  content: '1'; /* Example notification count */
+  content: attr(data-count); /* Example notification count */
   position: absolute;
   top: -5px;
   right: -5px;

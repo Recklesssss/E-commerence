@@ -7,12 +7,21 @@ import Cart from './cart/Cart';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Sales from './sales/Sales';
 import Rents from './rents/Rents';
+import Notification from './Notification/Notification';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
+        <Route
+        path='/Notifications'
+        element = {
+          <>
+          <Notification/>
+          </>
+        }
+        />
         <Route
         path='/rents'
         element = {

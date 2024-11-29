@@ -10,6 +10,7 @@ export const ProductProvider = ({ children }) => {
   const [categories, setCategories] = useState("electronics");
   const [calculate, setCalculate] = useState({});
   const [user_id, setUser_id] = useState();
+  const [countNotification,setCountNotification] = useState(0);
   const [userName, setUserName] = useState(() => localStorage.getItem("username") || "");
 
   // Fetch products based on category
@@ -74,6 +75,8 @@ useEffect(() => {
         userName,
         setUserName,
         fetchUserId,
+        countNotification,
+        setCountNotification,
       }}
     >
       {children}

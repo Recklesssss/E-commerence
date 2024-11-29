@@ -5,10 +5,10 @@ import { useProduct } from '../ProductContext';
 import axios from 'axios';
 
 function Cart() {
-  const { calculate, setCalculate, user_id } = useProduct();
+  const { calculate, setCalculate, user_id, userName } = useProduct();
   const [totalPrice, setTotalPrice] = useState(0);
   const [productId, setProductId] = useState([]);
-  const [quantity,setQuantity] = useState(0);
+  const [message,setMessage] = useState("")
 
   // Effect to set product ids based on the calculate object
   useEffect(() => {
@@ -25,6 +25,9 @@ function Cart() {
     }, 0);
     setTotalPrice(newTotalPrice);
   }, [calculate]);
+
+
+
 
   // Post Order function
   const postOrder = async () => {
@@ -43,11 +46,18 @@ function Cart() {
     }
 
     try {
+      const message = `New order placed by user ${userName} for a total of $${totalPrice}.`;
+      setMessage(message);
+      const notificationResponse = await axios.post("http://localhost:5000/postNotification",{ user_id,message:message,is_checked:false,});
       const productResponse = await axios.post("http://localhost:5000/postOrder", { user_id,orderItems,total:totalPrice });
+      const getName = await axios.get(`http://localhost:5000/getName?id=${user_id}`);
+      
       console.log(orderItems)
       console.log("Product order placed successfully:", productResponse.data);
       console.log("sucesss")
       alert("order added to the product successfully!");
+
+      
 
     } catch (error) {
       console.error("Error placing order:", error);

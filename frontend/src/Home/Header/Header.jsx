@@ -10,8 +10,7 @@ function Header() {
   const [toggle, setToggle] = useState(false);
   const [responsive, setResponsive] = useState(window.innerWidth <= 1240);
   const [showProfile, setShowProfile] = useState(false); // State to control profile modal
-  const { categories, setCategories } = useProduct();
-
+  const { categories, setCategories,} = useProduct();
   const handleResize = () => {
     setResponsive(window.innerWidth <= 1240);
   };
@@ -51,7 +50,7 @@ function Header() {
           {/* Desktop View */}
           <div style={{ display: responsive ? 'none' : 'flex' }} className="user-actions">
             <div className="notification">
-              <FaBell className="notification-icon" />
+              <Link to={"/Notifications"}><FaBell className="notification-icon" /></Link>
             </div>
             <Link to={"/Orders"}><div className="cart">My Cart</div></Link>
             <Link to={"/SignupSignin"}>
@@ -74,7 +73,7 @@ function Header() {
                   <li>
                     <Link to={"/SignupSignin"}>Sign in & up</Link>
                   </li>
-                  <li>Notifications</li>
+                  <Link to={"/Notifications"}><li>Notifications</li></Link>
                   <li onClick={toggleProfile}>Profile</li>
                 </ul>
               </div>

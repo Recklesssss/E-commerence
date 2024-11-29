@@ -219,6 +219,90 @@ app.post("/postSales",upload.single("product_picture"), async (req, res) => {
     }
   });
 
+  app.post("/postNotification", async (req, res) => {
+    try {
+      const { user_id, message, is_checked } = req.body;
+      const notification = await pool.query(
+        `INSERT INTO notifications (user_id, message, created_at,is_checked) VALUES ($1, $2, NOW(),$3)`,
+        [user_id, message,is_checked]
+      );
+      res.status(200).send({ success: true, message: "Notification sent successfully." });
+    } catch (error) {
+      console.error("Error posting notification:", error);
+      res.status(500).send({ success: false, message: "Failed to send notification." });
+    }
+  });
+  
+  app.get("/getName", async (req, res) => {
+    try {
+      const { id } = req.query;
+  
+      // Check if id is provided
+      if (!id) {
+        return res.status(400).json({ error: "User ID is required." });
+      }
+  
+      // Query the database
+      const result = await pool.query("SELECT name FROM users WHERE user_id = $1", [id]);
+  
+      // Check if the user was found
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: "User not found." });
+      }
+  
+      // Respond with the user's name
+      res.json({ name: result.rows[0].name });
+    } catch (error) {
+      console.error("Error fetching user name:", error.message);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
+// 1. Endpoint to fetch all notifications and count them
+app.get("/notifications", async (req, res) => {
+  try {
+    // Fetch all notifications
+    const user_id = 9
+    const result = await pool.query("SELECT * FROM notifications WHERE is_checked = FALSE");
+
+    // Count the number of unread notifications
+    const notificationCount = result.rows.length;
+
+    // Send the notifications and count as response
+    res.json({
+      notifications: result.rows,
+      unreadCount: notificationCount,
+    });
+  } catch (error) {
+    console.error("Error fetching notifications:", error.message);
+    res.status(500).json({ error: "Failed to fetch notifications" });
+  }
+});
+
+// 2. Endpoint to mark a notification as checked and decrease count
+app.post("/markNotificationAsChecked", async (req, res) => {
+  try {
+    const { notification_id } = req.body;
+
+    // Update the notification to set is_checked to TRUE
+    const updateResult = await pool.query(
+      "UPDATE notifications SET is_checked = TRUE WHERE notification_id = $1",
+      [notification_id]
+    );
+
+    // Check if any rows were affected (i.e., if the notification exists)
+    if (updateResult.rowCount === 0) {
+      return res.status(404).json({ error: "Notification not found" });
+    }
+
+    // Successfully marked as checked
+    res.status(200).json({ message: "Notification marked as checked" });
+  } catch (error) {
+    console.error("Error marking notification as checked:", error.message);
+    res.status(500).json({ error: "Failed to mark notification as checked" });
+  }
+});
+
 app.listen(5000, () => {
     console.log('Server running on http://localhost:5000');
 });
