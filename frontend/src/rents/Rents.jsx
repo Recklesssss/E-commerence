@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Header from "../Home/Header/Header";
 import "./Rents.css";
+import { useProduct } from "../ProductContext";
 
 function Rents() {
   const [toggleForm, setToggleForm] = useState(false);
@@ -11,6 +12,9 @@ function Rents() {
   const [productPicture, setProductPicture] = useState(null); // File input
   const [price, setPrice] = useState("");
   const [show ,setShow] = useState(false);
+  const [message,setMessage] = useState("");
+  const {user_id,userName} = useProduct()
+  const [id,setId] = useState(9)
 
   const postRents = async (e) => {
     e.preventDefault(); // Prevent default form submission
@@ -53,6 +57,18 @@ function Rents() {
       console.error("Error fetching rents data:", error.response?.data || error.message);
     }
   };
+  const sendFriendRequest = async (user_id) => {
+    try {
+      const message = `New friend has sent a request ${userName} .`;
+      setId(user_id);
+      setMessage(message);
+      const notificationResponse = await axios.post("http://localhost:5000/postNotification",{ user_id:id,message:message,is_checked:false,requesting_user:user_id});
+      console.log("Friend request sent!");
+    } catch (error) {
+      console.error("Error sending friend request:", error.response?.data || error.message);
+    }
+  };
+  
   const showContent = (index,isVisible) => {
     setShow((prevShow) => ({
       ...prevShow,
@@ -122,7 +138,7 @@ function Rents() {
                         display: show[index] ? "flex" : "none",
                       }}
                     >
-                      <button>Send a nudge to Owner</button>
+                      <button onClick={() => sendFriendRequest(item.user_id)}>Send a nudge to Owner</button>
                     </div>
                 </div>
               ))

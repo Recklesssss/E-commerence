@@ -221,10 +221,10 @@ app.post("/postSales",upload.single("product_picture"), async (req, res) => {
 
   app.post("/postNotification", async (req, res) => {
     try {
-      const { user_id, message, is_checked } = req.body;
+      const { user_id, message, is_checked,requesting_user } = req.body;
       const notification = await pool.query(
-        `INSERT INTO notifications (user_id, message, created_at,is_checked) VALUES ($1, $2, NOW(),$3)`,
-        [user_id, message,is_checked]
+        `INSERT INTO notifications (user_id, message, created_at,is_checked,requesting_user) VALUES ($1, $2, NOW(),$3,$4)`,
+        [user_id, message,is_checked,requesting_user]
       );
       res.status(200).send({ success: true, message: "Notification sent successfully." });
     } catch (error) {
