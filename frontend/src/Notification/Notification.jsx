@@ -3,6 +3,8 @@ import axios from 'axios'
 import "./Notification.css"
 import { useProduct } from '../ProductContext';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify"; // Import toast components
+import "react-toastify/dist/ReactToastify.css";
 
 function Notification() {
     const [notifications, setNotifications] = useState([]);
@@ -38,6 +40,7 @@ function Notification() {
         ));
   
         setUnreadCount(unreadCount - 1);
+        toast.success(`unread messages  ${unreadCount}`)
       } catch (error) {
         console.error("Error marking notification as checked:", error);
       }
@@ -62,6 +65,17 @@ function Notification() {
             </li>
           ))}
         </ul>
+        <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       </div>
     );
   };

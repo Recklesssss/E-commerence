@@ -88,22 +88,34 @@ app.get("/getCatagories", async (req, res) => {
   });
   
 
-app.post("/postOrder",async (req,res)=>{
+  app.post("/postOrder", async (req, res) => {
     try {
-        const {user_id,orderItems,total} = req.body;
-        
-        const orders = await pool.query(`INSERT INTO orders (user_id, order_date) VALUES ($1, NOW()) RETURNING order_id;`,[user_id])
-        const order_id = orders.rows[0].order_id;
-        for (const item of orderItems) {
-          const { quantity,product_id } = item;
-        const productOrders = await pool.query(`insert into order_products(product_id,order_id,quantity,total) values($1,$2,$3,$4)`,[product_id,order_id,quantity,total])
-        }
+      const { user_id, orderItems, total } = req.body;
+  
+      const orders = await pool.query(
+        `INSERT INTO orders (user_id, order_date) VALUES ($1, NOW()) RETURNING order_id;`,
+        [user_id]
+      );
+      const order_id = orders.rows[0].order_id;
+  
+      for (const item of orderItems) {
+        const { quantity, product_id } = item;
+        await pool.query(
+          `INSERT INTO order_products (product_id, order_id, quantity, total) VALUES ($1, $2, $3, $4)`,
+          [product_id, order_id, quantity, total]
+        );
+      }
+  
+      // Respond to client
+      res.status(201).json({ message: "Order created successfully" });
     } catch (error) {
-        console.error(error)
+      console.error("Error creating order:", error);
+  
+      // Respond with an error status and message
+      res.status(500).json({ message: "Failed to create order" });
     }
-
-});
-
+  });
+  
 app.get("/getUserId", async (req, res) => {
     try {
         const { name } = req.query; 

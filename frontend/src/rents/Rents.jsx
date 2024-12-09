@@ -1,47 +1,47 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify"; // Import toast components
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 import Header from "../Home/Header/Header";
 import "./Rents.css";
 import { useProduct } from "../ProductContext";
 
 function Rents() {
   const [toggleForm, setToggleForm] = useState(false);
-  const [rents, setRents] = useState([]); // State to store rent data
+  const [rents, setRents] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [productPicture, setProductPicture] = useState(null); // File input
+  const [productPicture, setProductPicture] = useState(null);
   const [price, setPrice] = useState("");
-  const [show ,setShow] = useState(false);
-  const [message,setMessage] = useState("");
-  const {user_id,userName} = useProduct()
-  const [id,setId] = useState(9)
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState("");
+  const { user_id, userName } = useProduct();
+  const [id, setId] = useState(9);
 
   const postRents = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
     try {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("content", content);
-      formData.append("price", parseInt(price)); // Ensure price is numeric
+      formData.append("price", parseInt(price));
       if (productPicture) {
         formData.append("product_picture", productPicture);
       }
 
-      // Post data to backend
       const response = await axios.post("http://localhost:5000/postRents", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Required for file uploads
+          "Content-Type": "multipart/form-data",
         },
       });
-
-      console.log("Rent posted successfully:", response.data);
+      toast.success("Rent posted successfully!"); // Success toast
       setTitle("");
       setContent("");
       setPrice("");
       setProductPicture(null);
-      fetchRentsData(); // Refresh rents data
+      fetchRentsData();
     } catch (error) {
-      console.error("Error posting rent:", error.response?.data || error.message);
+      toast.error(`Error posting rent: ${error.response?.data || error.message}`); // Error toast
     }
   };
 
@@ -54,22 +54,28 @@ function Rents() {
       const response = await axios.get("http://localhost:5000/rents");
       setRents(response.data);
     } catch (error) {
-      console.error("Error fetching rents data:", error.response?.data || error.message);
+      toast.error(`Error fetching rents data: ${error.response?.data || error.message}`); // Error toast
     }
   };
+
   const sendFriendRequest = async (user_id) => {
     try {
       const message = `New friend has sent a request ${userName} .`;
       setId(user_id);
       setMessage(message);
-      const notificationResponse = await axios.post("http://localhost:5000/postNotification",{ user_id:id,message:message,is_checked:false,requesting_user:user_id});
-      console.log("Friend request sent!");
+      await axios.post("http://localhost:5000/postNotification", {
+        user_id: id,
+        message: message,
+        is_checked: false,
+        requesting_user: user_id,
+      });
+      toast.success("Friend request sent!"); // Success toast
     } catch (error) {
-      console.error("Error sending friend request:", error.response?.data || error.message);
+      toast.error(`Error sending friend request: ${error.response?.data || error.message}`); // Error toast
     }
   };
-  
-  const showContent = (index,isVisible) => {
+
+  const showContent = (index, isVisible) => {
     setShow((prevShow) => ({
       ...prevShow,
       [index]: isVisible,
@@ -121,25 +127,28 @@ function Rents() {
           <div className="rents_container">
             {rents.length > 0 ? (
               rents.map((item, index) => (
-                <div 
+                <div
                   onMouseOver={() => showContent(index, true)}
                   onMouseOut={() => showContent(index, false)}
-                  key={index}>
-                    <h3>{item.product_name}</h3>
-                    <img
-                      src={item.image || `http://localhost:5000/uploads/${item.product_picture}`}
-                      alt={item.product_name}
-                    />
-                    <h5>{item.category}</h5>
-                    <h5>${item.price}</h5>
-                    <div 
-                      className="over_the"
-                      style={{
-                        display: show[index] ? "flex" : "none",
-                      }}
-                    >
-                      <button onClick={() => sendFriendRequest(item.user_id)}>Send a nudge to Owner</button>
-                    </div>
+                  key={index}
+                >
+                  <h3>{item.product_name}</h3>
+                  <img
+                    src={item.image || `http://localhost:5000/uploads/${item.product_picture}`}
+                    alt={item.product_name}
+                  />
+                  <h5>{item.category}</h5>
+                  <h5>${item.price}</h5>
+                  <div
+                    className="over_the"
+                    style={{
+                      display: show[index] ? "flex" : "none",
+                    }}
+                  >
+                    <button onClick={() => sendFriendRequest(item.user_id)}>
+                      Send a nudge to Owner
+                    </button>
+                  </div>
                 </div>
               ))
             ) : (
@@ -148,6 +157,7 @@ function Rents() {
           </div>
         </div>
       </div>
+      <ToastContainer /> {/* Add ToastContainer */}
     </div>
   );
 }

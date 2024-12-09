@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Header from "../Home/Header/Header";
 import "./Sales.css";
+import { ToastContainer, toast } from "react-toastify"; // Import toast components
+import "react-toastify/dist/ReactToastify.css";
 
 function Sales() {
   const [toggleForm, setToggleForm] = useState(false);
@@ -29,14 +31,16 @@ function Sales() {
         },
       });
   
-      console.log("Sales posted successfully:", response.data);
       setTitle("");
       setContent("");
       setPrice("");
       setProductPicture(null);
       fetchSalesData(); // Refresh sales data
+      toast.success("Sales posted successfully!");
     } catch (error) {
-      console.error("Error posting sale:", error.response?.data || error.message);
+      const errorMessage =
+        error.response?.data?.message || "Failed to post the sale. Please try again.";
+      toast.error(errorMessage);
     }
   };
   
@@ -102,7 +106,7 @@ function Sales() {
                 <div key={index}>
                   <h3>{item.product_name}</h3>
                   <img
-                    src={item.image|| `http://localhost:5000/uploads/${item.product_picture}`}
+                    src={item.image || `http://localhost:5000/uploads/${item.product_picture}`}
                     alt={item.product_name}
                   />
                   <h5>{item.category}</h5>
@@ -115,6 +119,17 @@ function Sales() {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 }

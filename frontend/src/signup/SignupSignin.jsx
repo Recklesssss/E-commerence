@@ -3,6 +3,8 @@ import "./SignupSignin.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useProduct } from "../ProductContext";
+import { ToastContainer, toast } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css"; 
 
 const SignupSignin = () => {
   const { setUserName, fetchUserId } = useProduct();
@@ -39,7 +41,7 @@ const SignupSignin = () => {
         email,
         password,
       });
-      alert("Successfully signed up! ENJOY YOUR STAY!");
+      toast.success("Successfully signed up! ENJOY YOUR STAY!");
       // Save username in context and localStorage
       setUserName(name);
       localStorage.setItem("username", name);
@@ -59,7 +61,7 @@ const SignupSignin = () => {
         params: { email, password },
       });
       const { username } = response.data; // Assuming API returns username
-      alert("Successfully logged in");
+      toast.success("Successfully logged in");
       // Save username in context and localStorage
       setUserName(username);
       localStorage.setItem("username", username);
@@ -137,6 +139,17 @@ const SignupSignin = () => {
           </p>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 };
