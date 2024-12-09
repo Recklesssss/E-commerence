@@ -315,6 +315,23 @@ app.post("/markNotificationAsChecked", async (req, res) => {
   }
 });
 
+app.get("/history/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const history = await pool.query(
+      `SELECT * 
+       FROM orders op
+       INNER JOIN order_products o ON o.order_id = op.order_id
+       WHERE user_id = $1`,
+      [userId]
+    );
+    res.status(200).json(history.rows);
+  } catch (error) {
+    console.error("Error fetching history:", error);
+    res.status(500).json({ message: "Failed to fetch order history" });
+  }
+});
+
 app.listen(5000, () => {
     console.log('Server running on http://localhost:5000');
 });

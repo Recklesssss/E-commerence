@@ -59,6 +59,7 @@ function Header() {
             <div className="profile" onClick={toggleProfile}>
               <FaUserCircle className="profile-icon" />
             </div>
+            <Link to={"/history"}><div className="signin">History</div></Link>
           </div>
 
           {/* Mobile View */}
@@ -75,6 +76,7 @@ function Header() {
                   </li>
                   <Link to={"/Notifications"}><li>Notifications</li></Link>
                   <li onClick={toggleProfile}>Profile</li>
+                  <Link to={"/history"}><li>History</li></Link>
                 </ul>
               </div>
             )}

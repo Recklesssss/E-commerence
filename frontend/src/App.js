@@ -8,12 +8,21 @@ import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Sales from './sales/Sales';
 import Rents from './rents/Rents';
 import Notification from './Notification/Notification';
+import History from './history/History';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
+        <Route
+        path='/history'
+        element = {
+          <>
+          <History/>
+          </>
+        }
+        />
         <Route
         path='/Notifications'
         element = {
